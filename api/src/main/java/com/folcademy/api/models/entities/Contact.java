@@ -14,5 +14,6 @@ public class Contact {
    @GenericGenerator(name = "uuid", strategy = "uuid2")
    private String id;
    private String name;
+   @Column(unique = true)
    private Integer numberPhone;
 }

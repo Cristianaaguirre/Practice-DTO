@@ -1,5 +1,7 @@
 package com.folcademy.api.services;
 
+import com.folcademy.api.mapper.ContactMapper;
+import com.folcademy.api.models.DTOs.ContactDTO;
 import com.folcademy.api.models.entities.Contact;
 import com.folcademy.api.repositories.ContactoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ public class ContactService {
 
    @Autowired
    private ContactoRepository contactoRepository;
+   @Autowired
+   private ContactMapper contactMapper;
 
    @Transactional
-   public Contact saveContact(Contact auxCnt) {
-      return contactoRepository.save(auxCnt);
+   public ContactDTO returnDTO(Contact auxCnt) {
+      return contactMapper.entityToDTO(contactoRepository.save(auxCnt));
    }
    @Transactional
    public Contact getContact(String auxId) throws Exception {
@@ -28,15 +32,10 @@ public class ContactService {
    }
    @Transactional
    public Contact putContact(Contact aux, String id) throws Exception {
-      Optional<Contact> optional = contactoRepository.findById(id);
-      if (optional.isEmpty()) throw new Exception("DON'T FOUND");
-      else {
-         Contact contact = optional.get();
-         contact.setName(aux.getName());
-         contact.setNumberPhone(aux.getNumberPhone());
-         contactoRepository.save(contact);
-         return contact;
-      }
+      Contact contact = getContact(id);
+      contact.setName(aux.getName());
+      contact.setNumberPhone(aux.getNumberPhone());
+      return contactoRepository.save(contact);
    }
    @Transactional
    public HttpStatus deleteContact(String auxId) throws Exception {

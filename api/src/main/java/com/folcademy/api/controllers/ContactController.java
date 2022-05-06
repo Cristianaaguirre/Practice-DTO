@@ -17,8 +17,6 @@ public class ContactController {
 
    @Autowired
    private ContactService contactService;
-   @Autowired
-   private ContactMapper contactMapper;
 
    //===========Gets===========//
    @GetMapping(path = "get-contact/{id}")
@@ -33,7 +31,7 @@ public class ContactController {
    //===========Post===========//
    @PostMapping(path = "add-contact")
    public ContactDTO addContact(@RequestBody Contact auxCnt) {
-      return contactMapper.entityToDTO(contactService.saveContact(auxCnt));
+      return contactService.returnDTO(auxCnt);
    }
 
    //===========Put===========//
